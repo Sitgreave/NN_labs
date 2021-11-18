@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class lab_3 : MonoBehaviour
 {
@@ -18,13 +20,18 @@ public class lab_3 : MonoBehaviour
     private string _inputAction;
     private int _inputActionId;
     private const int actionCapacity = 4;
-    private string[] _inputActions = new string [30];
+    private List<string> _inputActions = new List<string>();
     //private int _resultID;
     Dictionary<string, string> _firstWay = new Dictionary<string, string>(actionCapacity);
     Dictionary<string, string> _secondWay = new Dictionary<string, string>(actionCapacity);
     Dictionary<string, string> _conflictWay = new Dictionary<string, string>(actionCapacity);
     Dictionary<string, string> _myWay = new Dictionary<string, string>(actionCapacity);
     // Dictionary<string, string> _dump = new Dictionary<string, string>(actionCapacity*2);
+    public Button button;
+    public void Restart()
+    {
+        SceneManager.LoadScene(0);
+    }
     public GameObject ConfPanel;
     readonly string[] _result =
     {
@@ -71,13 +78,19 @@ public class lab_3 : MonoBehaviour
     }
     public void Build()
     {
-        if (_conflictWay.ContainsKey(_inputAction))
+        Debug.Log(_inputActions.Count);
+        if (_conflictWay.ContainsKey(_inputAction) && _inputActions.Count == 1)
         {
             _outputText.text = "Конфликтный набор!";
             _rulesText.text += "ЕСЛИ " + _inputAction + ", ТО " + _conflictWay[_inputAction] + ".\n";
             ConfPanel.SetActive(true);
+            button.enabled = false;
         }
-        else DisplayData_2(_result, _rulesText);
+        else
+        {
+            DisplayData_2(_result, _rulesText);
+            ConfPanel.SetActive(false);
+        }
     }
   
 
@@ -123,7 +136,7 @@ public class lab_3 : MonoBehaviour
     {
       
         _operativeText.text +=CheckAction()+ "\n";
-        _inputActions[_inputActionId] = _inputAction;
+        _inputActions.Add(_inputAction);
 
     }
     private string CheckAction()
