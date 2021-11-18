@@ -78,7 +78,6 @@ public class lab_3 : MonoBehaviour
     }
     public void Build()
     {
-        Debug.Log(_inputActions.Count);
         if (_conflictWay.ContainsKey(_inputAction) && _inputActions.Count == 1)
         {
             _outputText.text = "Конфликтный набор!";
